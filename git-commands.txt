@@ -1,0 +1,11 @@
+# Commands to upload your site to GitHub (run these in the personal-website folder)
+
+cd /Users/kmeiss/personal-website
+git init
+git add .
+git commit -m "Initial website setup"
+git branch -M main
+git remote add origin https://github.com/[YOUR-USERNAME]/[YOUR-REPO-NAME].git
+git push -u origin main
+
+# Replace [YOUR-USERNAME] and [YOUR-REPO-NAME] with your actual GitHub username and repository name
