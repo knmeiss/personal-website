@@ -7,49 +7,438 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <h1 class="logo">Kourtney Meiss</h1>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="speaking.html">Speaking</a></li>
-                <li><a href="resources.html">Resources</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Desktop Environment -->
+    <div class="desktop">
+        <!-- Desktop Icons -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-window="about" title="Double-click to open About Me">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">About Me</span>
+            </div>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h2>Developer Advocate at Amazon for Devices</h2>
-                <p class="bio">
-                    [Your bio goes here - 2-3 sentences about your background, what you're passionate about, 
-                    and what you do as a Developer Advocate. This is where you can share your story and 
-                    connect with conference attendees who visit your site.]
-                </p>
-                
-                <div class="social-links">
-                    <a href="[LINKEDIN_URL]" target="_blank" class="social-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                        LinkedIn
-                    </a>
-                    <a href="[GITHUB_URL]" target="_blank" class="social-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                        GitHub
-                    </a>
+            <div class="desktop-icon" data-window="speaking" title="Double-click to open Speaking Engagements">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2,16V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V16H2M4,3A2,2 0 0,0 2,5V15H22V5A2,2 0 0,0 20,3H4M4,5H20V13H4V5M6,7V11H18V7H6M8,8H16V10H8V8Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Speaking</span>
+            </div>
+
+            <div class="desktop-icon" data-window="resources" title="Double-click to open Resources">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Resources</span>
+            </div>
+
+            <div class="desktop-icon" data-window="social" title="Double-click to open Connect">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Connect</span>
+            </div>
+
+            <div class="desktop-icon" data-window="snake" title="Double-click to open Snake Game">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21A7,7 0 0,1 14,26H13V21.27C13.6,21.61 14,22.26 14,23A2,2 0 0,1 12,25A2,2 0 0,1 10,23C10,22.26 10.4,21.61 11,21.27V26H10A7,7 0 0,1 3,19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M5,9A5,5 0 0,0 5,19A5,5 0 0,0 19,19A5,5 0 0,0 19,9"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Snake</span>
+            </div>
+
+            <div class="desktop-icon" data-window="wallpaper" title="Double-click to open Wallpapers">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5,17L9.5,11L13,15.5L15.5,12.5L19,17M20,6V18A2,2 0 0,1 18,20H6A2,2 0 0,1 4,18V6A2,2 0 0,1 6,4H18A2,2 0 0,1 20,6Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Wallpapers</span>
+            </div>
+
+            <div class="desktop-icon" data-window="paint" title="Double-click to open Paint">
+                <div class="icon-image">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H18A1,1 0 0,1 19,15H22V16.5C22,17.88 20.88,19 19.5,19H18A1,1 0 0,1 17,18H14C13.4,18 12.95,17.64 12.84,17.11L12.73,16.73C12.59,16.37 12.34,16.07 12.04,15.94C11.74,15.81 11.4,15.84 11.13,16.04L11,16.13A2,2 0 0,1 7.5,15.63L7.5,15.63A2,2 0 0,1 7.5,12.37L7.63,12.5C7.86,12.73 8.21,12.84 8.53,12.84C8.85,12.84 9.2,12.73 9.43,12.5L9.5,12.44V9.5A6.5,6.5 0 0,1 9.5,3M9.5,5A4.5,4.5 0 0,0 5,9.5A4.5,4.5 0 0,0 9.5,14A4.5,4.5 0 0,0 14,9.5A4.5,4.5 0 0,0 9.5,5Z"/>
+                    </svg>
+                </div>
+                <span class="icon-label">Paint</span>
+            </div>
+        </div>
+
+        <!-- Windows -->
+        <div class="window" id="about-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('about-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">About Me - Kourtney Meiss</div>
+            </div>
+            <div class="window-content">
+                <div class="about-content">
+                    <div class="profile-section">
+                        <div class="profile-avatar">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                            </svg>
+                        </div>
+                        <div class="profile-info">
+                            <h2>Kourtney Meiss</h2>
+                            <h3>Developer Advocate at Amazon for Devices</h3>
+                            <p class="bio-text">
+                                [Your bio goes here - 2-3 sentences about your background, what you're passionate about, 
+                                and what you do as a Developer Advocate. This is where you can share your story and 
+                                connect with conference attendees who visit your site.]
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Kourtney Meiss. All rights reserved.</p>
         </div>
-    </footer>
+
+        <div class="window" id="speaking-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('speaking-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Speaking Engagements</div>
+            </div>
+            <div class="window-content">
+                <div class="speaking-content">
+                    <section class="upcoming-section">
+                        <h3>🎤 Upcoming Talks</h3>
+                        <div class="talk-item upcoming">
+                            <div class="talk-date">March 2025</div>
+                            <div class="talk-details">
+                                <h4>[Talk Title]</h4>
+                                <p class="talk-venue">[Conference Name] • [Location]</p>
+                                <p class="talk-description">[Brief description of what you'll be talking about]</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="past-section">
+                        <h3>📚 Past Talks</h3>
+                        <div class="talk-item">
+                            <div class="talk-date">Jan 2025</div>
+                            <div class="talk-details">
+                                <h4>[Talk Title]</h4>
+                                <p class="talk-venue">[Conference Name] • [Location]</p>
+                                <p class="talk-description">[Brief description of what you talked about]</p>
+                                <div class="talk-links">
+                                    <a href="[RECORDING_URL]" target="_blank">📹 Recording</a>
+                                    <a href="[SLIDES_URL]" target="_blank">📊 Slides</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="resources-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('resources-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Resources</div>
+            </div>
+            <div class="window-content">
+                <div class="resources-content">
+                    <div class="resource-category">
+                        <h3>🛠️ Development Tools</h3>
+                        <div class="resource-list">
+                            <div class="resource-item">
+                                <a href="[TOOL_URL]" target="_blank">[Tool Name]</a>
+                                <p>[Brief description of why this tool is useful]</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resource-category">
+                        <h3>📖 Learning Resources</h3>
+                        <div class="resource-list">
+                            <div class="resource-item">
+                                <a href="[RESOURCE_URL]" target="_blank">[Resource Name]</a>
+                                <p>[Brief description of what makes this resource valuable]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="snake-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('snake-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Snake Game</div>
+            </div>
+            <div class="window-content">
+                <div class="snake-game">
+                    <div class="snake-header">
+                        <div class="snake-score">
+                            <span>Score: <span id="snake-score">0</span></span>
+                            <span>High Score: <span id="snake-high-score">0</span></span>
+                        </div>
+                        <div class="snake-controls">
+                            <button id="snake-start" class="snake-btn">Start Game</button>
+                            <button id="snake-pause" class="snake-btn" disabled>Pause</button>
+                        </div>
+                    </div>
+                    <div class="snake-game-area">
+                        <canvas id="snake-canvas" width="400" height="400"></canvas>
+                        <div class="snake-instructions">
+                            <p><strong>How to Play:</strong></p>
+                            <p>🐍 Use arrow keys to move</p>
+                            <p>🍎 Eat the red food to grow</p>
+                            <p>❌ Don't hit walls or yourself!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="wallpaper-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('wallpaper-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Desktop Wallpapers</div>
+            </div>
+            <div class="window-content">
+                <div class="wallpaper-selector">
+                    <h3>Choose Your Desktop Background</h3>
+                    <div class="wallpaper-grid">
+                        <div class="wallpaper-option" data-wallpaper="default">
+                            <div class="wallpaper-preview default-bg"></div>
+                            <span>Default Blue</span>
+                        </div>
+                        <div class="wallpaper-option" data-wallpaper="purple">
+                            <div class="wallpaper-preview purple-bg"></div>
+                            <span>Purple Gradient</span>
+                        </div>
+                        <div class="wallpaper-option" data-wallpaper="green">
+                            <div class="wallpaper-preview green-bg"></div>
+                            <span>Forest Green</span>
+                        </div>
+                        <div class="wallpaper-option" data-wallpaper="orange">
+                            <div class="wallpaper-preview orange-bg"></div>
+                            <span>Sunset Orange</span>
+                        </div>
+                        <div class="wallpaper-option" data-wallpaper="dark">
+                            <div class="wallpaper-preview dark-bg"></div>
+                            <span>Dark Mode</span>
+                        </div>
+                        <div class="wallpaper-option" data-wallpaper="matrix">
+                            <div class="wallpaper-preview matrix-bg"></div>
+                            <span>Yellow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="social-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('social-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Connect With Me</div>
+            </div>
+            <div class="window-content">
+                <div class="social-content">
+                    <h3>Let's Connect!</h3>
+                    <div class="social-links-window">
+                        <a href="[LINKEDIN_URL]" target="_blank" class="social-link-window">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            LinkedIn
+                        </a>
+                        <a href="[GITHUB_URL]" target="_blank" class="social-link-window">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="paint-window">
+            <div class="window-header">
+                <div class="window-controls">
+                    <button class="window-control close" onclick="closeWindow('paint-window')" title="Close window"></button>
+                    <button class="window-control minimize" title="Minimize to taskbar"></button>
+                    <button class="window-control maximize" title="Maximize window"></button>
+                </div>
+                <div class="window-title">Paint - Untitled</div>
+            </div>
+            <div class="window-content">
+                <div class="paint-app">
+                    <div class="paint-toolbar">
+                        <div class="tool-group">
+                            <button class="tool-btn active" data-tool="brush" title="Brush">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7,14C5.89,14 5,13.1 5,12C5,10.89 5.89,10 7,10C8.1,10 8.99,10.89 8.99,12C8.99,13.1 8.1,14 7,14M12.6,5.5C12.99,5.1 13.66,5.1 14.06,5.5L18.5,9.94C18.89,10.33 18.89,11 18.5,11.39L12,17.89C11.81,18.08 11.55,18.19 11.28,18.19C11.01,18.19 10.75,18.08 10.56,17.89L7.11,14.44C6.72,14.05 6.72,13.38 7.11,12.99L13.61,6.5C13.8,6.31 14.06,6.19 14.33,6.19C14.6,6.19 14.86,6.31 15.05,6.5L12.6,5.5Z"/>
+                                </svg>
+                            </button>
+                            <button class="tool-btn" data-tool="eraser" title="Eraser">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z"/>
+                                </svg>
+                            </button>
+                            <button class="tool-btn" data-tool="line" title="Line">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15,3V7.59L7.59,15H3V21H9V16.42L16.42,9H21V3M17,5H19V7H17M5,17H7V19H5"/>
+                                </svg>
+                            </button>
+                            <button class="tool-btn" data-tool="rectangle" title="Rectangle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M3,3V21H21V3"/>
+                                </svg>
+                            </button>
+                            <button class="tool-btn" data-tool="circle" title="Circle">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="tool-group">
+                            <label class="brush-size-label">Size:</label>
+                            <input type="range" id="brush-size" min="1" max="50" value="5" class="brush-size-slider">
+                            <span id="size-display">5</span>
+                        </div>
+                        
+                        <div class="tool-group">
+                            <div class="color-palette">
+                                <div class="color-swatch active" data-color="#000000" style="background: #000000"></div>
+                                <div class="color-swatch" data-color="#ff0000" style="background: #ff0000"></div>
+                                <div class="color-swatch" data-color="#00ff00" style="background: #00ff00"></div>
+                                <div class="color-swatch" data-color="#0000ff" style="background: #0000ff"></div>
+                                <div class="color-swatch" data-color="#ffff00" style="background: #ffff00"></div>
+                                <div class="color-swatch" data-color="#ff00ff" style="background: #ff00ff"></div>
+                                <div class="color-swatch" data-color="#00ffff" style="background: #00ffff"></div>
+                                <div class="color-swatch" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ccc"></div>
+                                <div class="color-swatch" data-color="#808080" style="background: #808080"></div>
+                                <div class="color-swatch" data-color="#800000" style="background: #800000"></div>
+                                <div class="color-swatch" data-color="#008000" style="background: #008000"></div>
+                                <div class="color-swatch" data-color="#000080" style="background: #000080"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-group">
+                            <button class="action-btn" id="clear-canvas" title="Clear Canvas">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                                </svg>
+                                Clear
+                            </button>
+                            <button class="action-btn" id="save-canvas" title="Save Drawing">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"/>
+                                </svg>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="paint-canvas-container">
+                        <canvas id="paint-canvas" width="800" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matrix Effect Overlay -->
+        <div class="matrix-overlay" id="matrix-overlay">
+            <canvas id="matrix-canvas"></canvas>
+        </div>
+        
+        <!-- Tooltip -->
+        <div class="tooltip" id="tooltip"></div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button" id="start-button">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+            </svg>
+            <span>KM</span>
+        </div>
+        <div class="start-menu" id="start-menu">
+            <div class="start-menu-header">
+                <div class="user-info">
+                    <div class="user-avatar">KM</div>
+                    <div class="user-name">Kourtney Meiss</div>
+                </div>
+            </div>
+            <div class="start-menu-items">
+                <div class="start-menu-item" data-action="reset" title="Reset the desktop to initial state">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16,18H18V16H16M16,14H18V12H16M14,22H18A2,2 0 0,0 20,20V4A2,2 0 0,0 18,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H14V20H6V4H18V20H14"/>
+                    </svg>
+                    <span>Reset Desktop</span>
+                </div>
+                <div class="start-menu-item" data-action="about">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                    </svg>
+                    <span>About This Desktop</span>
+                </div>
+            </div>
+        </div>
+        <div class="taskbar-buttons" id="taskbar-buttons">
+            <!-- Minimized windows will appear here -->
+        </div>
+        <div class="taskbar-time" id="taskbar-time"></div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <!-- Audio Elements for OS Sounds -->
+    <div class="audio-container" style="display: none;">
+        <audio id="startup-sound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+        <audio id="click-sound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+        <audio id="error-sound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+        <audio id="window-open-sound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+        <audio id="window-close-sound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+        </audio>
+    </div>
 </body>
 </html>
