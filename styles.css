@@ -210,80 +210,146 @@ body {
 }
 
 /* Speaking Window Content */
-.speaking-content section {
-    margin-bottom: 32px;
+.speaking-content {
+    padding: 20px;
+    background: #f8f9fa;
+    overflow-y: auto;
+    min-height: 100%;
 }
 
-.speaking-content h3 {
-    font-size: 18px;
+/* No Talks Placeholder */
+.no-talks-placeholder {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.placeholder-icon {
+    font-size: 48px;
     margin-bottom: 16px;
-    color: #2c3e50;
-    border-bottom: 2px solid #667eea;
-    padding-bottom: 8px;
 }
 
-.talk-item {
-    display: flex;
-    gap: 16px;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
+.no-talks-placeholder h3 {
+    color: #333;
+    font-size: 20px;
     margin-bottom: 12px;
-    border-left: 4px solid #667eea;
-}
-
-.talk-item.upcoming {
-    border-left-color: #28ca42;
-    background: rgba(40, 202, 66, 0.05);
-}
-
-.talk-date {
-    font-size: 12px;
     font-weight: 600;
+    border: none;
+    padding: 0;
+}
+
+.no-talks-placeholder > p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+/* Contact Buttons */
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.email-contact {
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+.cta-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.cta-button.secondary {
+    background: #f8f9fa;
     color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.cta-button.secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Past Talks Section */
+.past-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e9ecef;
+}
+
+.past-section h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border: none;
+    padding: 0;
+}
+
+.past-talks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.past-talk-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.past-talk-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.past-talk-card .talk-date {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    min-width: 80px;
+    margin-bottom: 8px;
 }
 
-.talk-details h4 {
+.talk-title {
+    color: #333;
+    font-weight: 600;
     font-size: 16px;
     margin-bottom: 4px;
-    color: #2c3e50;
 }
 
 .talk-venue {
+    color: #666;
     font-size: 14px;
-    color: #667eea;
     margin-bottom: 8px;
-    font-weight: 500;
 }
 
 .talk-description {
-    font-size: 14px;
     color: #555;
-    line-height: 1.5;
-    margin-bottom: 12px;
-}
-
-.talk-links {
-    display: flex;
-    gap: 12px;
-}
-
-.talk-links a {
-    font-size: 12px;
-    color: #667eea;
-    text-decoration: none;
-    padding: 4px 8px;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.talk-links a:hover {
-    background: #667eea;
-    color: white;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
 /* Resources Window Content */
@@ -330,6 +396,22 @@ body {
     margin-bottom: 20px;
     color: #2c3e50;
     text-align: center;
+}
+
+.contact-info {
+    margin-bottom: 24px;
+}
+
+.email-contact-main {
+    padding: 16px 24px;
+    background: #f8f9fa;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 300px;
 }
 
 /* Taskbar */
