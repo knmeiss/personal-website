@@ -333,15 +333,35 @@ function initializeWallpaperChanger() {
     wallpaperOptions.forEach(option => {
         option.addEventListener('click', function() {
             const wallpaper = this.dataset.wallpaper;
+            console.log('Wallpaper clicked:', wallpaper); // Debug log
             playSound('click');
             
-            // Remove existing wallpaper classes
-            desktop.className = 'desktop';
+            // Remove existing wallpaper classes and clear all inline styles
+            console.log('Before clearing - classes:', desktop.className);
+            console.log('Before clearing - inline styles:', desktop.style.cssText);
             
-            // Add new wallpaper class
-            if (wallpaper !== 'default') {
+            desktop.className = 'desktop';
+            desktop.style.background = '';
+            desktop.style.backgroundImage = '';
+            desktop.style.backgroundColor = '';
+            
+            console.log('After clearing - classes:', desktop.className);
+            console.log('After clearing - inline styles:', desktop.style.cssText);
+            
+            // Apply wallpaper
+            if (wallpaper === 'default') {
+                desktop.style.backgroundImage = 'radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%)';
+                desktop.style.backgroundColor = '#1976d2';
+            } else if (wallpaper === 'green') {
+                desktop.style.backgroundImage = 'radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%)';
+                desktop.style.backgroundColor = '#11998e';
+            } else {
                 desktop.classList.add(`wallpaper-${wallpaper}`);
             }
+            
+            console.log('Final classes:', desktop.className);
+            console.log('Final inline styles:', desktop.style.cssText);
+            console.log('Desktop computed background:', window.getComputedStyle(desktop).background);
             
             // Visual feedback
             wallpaperOptions.forEach(opt => opt.style.opacity = '0.7');
@@ -964,19 +984,35 @@ class SolitaireGame {
 }
 
 function openWindow(windowId) {
-    const window = document.getElementById(windowId);
+    // Map data-window values to actual window IDs
+    const windowIdMap = {
+        'about': 'about-window',
+        'speaking': 'speaking-window', 
+        'resources': 'resources-window',
+        'social': 'social-window',
+        'snake': 'snake-window',
+        'wallpaper': 'wallpaper-window',
+        'paint': 'paint-window'
+    };
+    
+    const actualWindowId = windowIdMap[windowId] || windowId;
+    const window = document.getElementById(actualWindowId);
+    
+    console.log('Looking for window:', actualWindowId, window); // Debug log
+    
     if (!window) {
+        console.log('Window not found:', actualWindowId);
         return;
     }
 
     // If window is already open, just bring it to front and restore if minimized
-    if (openWindows.has(windowId)) {
-        restoreWindow(windowId);
+    if (openWindows.has(actualWindowId)) {
+        restoreWindow(actualWindowId);
         return;
     }
 
     // Add to open windows set
-    openWindows.add(windowId);
+    openWindows.add(actualWindowId);
 
     // Open the window
     window.style.display = 'block';
@@ -985,7 +1021,7 @@ function openWindow(windowId) {
     bringWindowToFront(window);
     
     // Add taskbar button
-    addTaskbarButton(windowId);
+    addTaskbarButton(actualWindowId);
     
     // Initialize snake game if opening snake window
     if (windowId === 'snake-window' && !snakeGame) {
@@ -1643,7 +1679,7 @@ function resetDesktop() {
 }
 
 function showAboutDialog() {
-    alert('Desktop OS v1.0\n\nBuilt with HTML, CSS, and JavaScript\nBy Kourtney Meiss\n\nFeatures:\n• Draggable windows and icons\n• Multiple applications\n• Taskbar with minimize/restore\n• Interactive games and tools\n• Matrix effect (triple-click desktop!)');
+    alert('Desktop OS v1.0\n\nBuilt with HTML, CSS, and JavaScript\nBy Kourtney Meiss\n\nHow to Use:\n• Double-click icons to launch apps\n• Use arrow keys + spacebar for keyboard navigation\n• Drag windows and icons around\n• Minimize windows to taskbar\n\nFeatures:\n• Interactive games and tools\n• Draggable windows and icons\n• Taskbar with minimize/restore\n• Hidden easter eggs (try pressing "J"!)');
 }
 
 // Matrix Effect Implementation
@@ -1775,6 +1811,82 @@ window.fixIcons = function() {
         icon.style.transform = 'none';
     });
 };
+
+// Keyboard navigation for desktop icons
+let currentFocusIndex = -1;
+const desktopIcons = document.querySelectorAll('.desktop-icon');
+
+document.addEventListener('keydown', function(e) {
+    console.log('Key pressed:', e.code); // Debug all key presses
+    
+    // Snail jump functionality - now uses J key
+    if (e.code === 'KeyJ') {
+        console.log('J key - snail jump');
+        const snail = document.querySelector('.snail');
+        if (snail && !snail.classList.contains('jumping')) {
+            snail.classList.add('jumping');
+            setTimeout(() => {
+                snail.classList.remove('jumping');
+            }, 600);
+        }
+        return;
+    }
+
+    // Desktop icon navigation
+    if (e.code === 'ArrowRight' || e.code === 'ArrowLeft' || e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+        console.log('Arrow key pressed, currentFocusIndex:', currentFocusIndex);
+        e.preventDefault();
+        
+        // Remove current focus
+        if (currentFocusIndex >= 0) {
+            desktopIcons[currentFocusIndex].classList.remove('keyboard-focused');
+        }
+        
+        // Navigate based on arrow key
+        if (e.code === 'ArrowRight' || e.code === 'ArrowDown') {
+            currentFocusIndex = (currentFocusIndex + 1) % desktopIcons.length;
+        } else if (e.code === 'ArrowLeft' || e.code === 'ArrowUp') {
+            currentFocusIndex = currentFocusIndex <= 0 ? desktopIcons.length - 1 : currentFocusIndex - 1;
+        }
+        
+        // Add focus to new icon
+        desktopIcons[currentFocusIndex].classList.add('keyboard-focused');
+        console.log('New focus index:', currentFocusIndex);
+    }
+    
+    // Activate focused icon with spacebar or enter
+    if (e.code === 'Space' || e.code === 'Enter') {
+        console.log('Space/Enter pressed, currentFocusIndex:', currentFocusIndex);
+        
+        // If no icon is focused, focus the first one
+        if (currentFocusIndex < 0) {
+            console.log('No icon focused, focusing first icon');
+            currentFocusIndex = 0;
+            desktopIcons[currentFocusIndex].classList.add('keyboard-focused');
+            return;
+        }
+        
+        e.preventDefault();
+        const focusedIcon = desktopIcons[currentFocusIndex];
+        const windowId = focusedIcon.getAttribute('data-window');
+        console.log('Activating icon:', windowId, focusedIcon);
+        
+        if (windowId) {
+            console.log('Calling openWindow with:', windowId);
+            openWindow(windowId);
+        } else {
+            console.log('No windowId, trying click fallback');
+            focusedIcon.click();
+        }
+    }
+    
+    // Clear focus with escape
+    if (e.code === 'Escape' && currentFocusIndex >= 0) {
+        console.log('Escape pressed, clearing focus');
+        desktopIcons[currentFocusIndex].classList.remove('keyboard-focused');
+        currentFocusIndex = -1;
+    }
+});
 
 // Test functions for debugging
 window.testMatrix = function() {
