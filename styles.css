@@ -18,7 +18,7 @@ body {
     width: 100vw;
     height: calc(100vh - 50px);
     position: relative;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
     background-image: 
         radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
         radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%);
@@ -56,6 +56,22 @@ body {
 
 .desktop-icon:hover {
     background: rgba(255, 255, 255, 0.1);
+}
+
+/* Keyboard focus indicator */
+.desktop-icon.keyboard-focused {
+    background: rgba(102, 126, 234, 0.3);
+    border: 2px solid #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Keyboard focus indicator */
+.desktop-icon.keyboard-focused {
+    background: rgba(102, 126, 234, 0.3);
+    border: 2px solid #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .desktop-icon.selected {
@@ -430,6 +446,165 @@ body {
     z-index: 1000;
 }
 
+/* Animated Snail */
+.snail-container {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    pointer-events: none;
+    z-index: 1001;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        transparent 60%, 
+        #2d5016 60%, 
+        #3a6b1f 80%, 
+        #4a7c28 100%);
+}
+
+/* Create individual grass blades */
+.snail-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15px;
+    background-image: 
+        /* Multiple grass blade shadows */
+        linear-gradient(88deg, transparent 0px, transparent 1px, #2d5016 1px, #2d5016 2px, transparent 2px),
+        linear-gradient(92deg, transparent 0px, transparent 2px, #3a6b1f 2px, #3a6b1f 3px, transparent 3px),
+        linear-gradient(87deg, transparent 0px, transparent 1px, #4a7c28 1px, #4a7c28 2px, transparent 2px),
+        linear-gradient(91deg, transparent 0px, transparent 3px, #2d5016 3px, #2d5016 4px, transparent 4px),
+        linear-gradient(89deg, transparent 0px, transparent 2px, #3a6b1f 2px, #3a6b1f 3px, transparent 3px);
+    background-size: 8px 100%, 12px 100%, 6px 100%, 10px 100%, 14px 100%;
+    background-position: 0px 0px, 3px 0px, 6px 0px, 9px 0px, 12px 0px;
+    background-repeat: repeat-x;
+    animation: grassSway 4s ease-in-out infinite;
+}
+
+/* Add more grass texture */
+.snail-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    background-image: 
+        linear-gradient(86deg, transparent 0px, transparent 1px, #4a7c28 1px, #4a7c28 2px, transparent 2px),
+        linear-gradient(94deg, transparent 0px, transparent 2px, #2d5016 2px, #2d5016 3px, transparent 3px),
+        linear-gradient(88deg, transparent 0px, transparent 1px, #3a6b1f 1px, #3a6b1f 2px, transparent 2px);
+    background-size: 7px 100%, 11px 100%, 9px 100%;
+    background-position: 2px 0px, 5px 0px, 8px 0px;
+    background-repeat: repeat-x;
+    animation: grassSway 4.5s ease-in-out infinite reverse;
+}
+
+@keyframes grassSway {
+    0%, 100% { 
+        transform: translateX(0px) skewX(0deg); 
+    }
+    25% { 
+        transform: translateX(0.5px) skewX(0.5deg); 
+    }
+    50% { 
+        transform: translateX(1px) skewX(1deg); 
+    }
+    75% { 
+        transform: translateX(0.5px) skewX(0.5deg); 
+    }
+}
+
+.snail {
+    position: absolute;
+    font-size: 24px;
+    animation: crawl 60s linear infinite;
+    z-index: 1002;
+    transition: transform 0.1s ease-out;
+}
+
+/* Snail jumping animation - uses margin-top to avoid transform conflicts */
+.snail.jumping {
+    animation: crawl 60s linear infinite, snailJumpOnly 0.6s ease-out;
+}
+
+@keyframes snailJumpOnly {
+    0% {
+        margin-top: 0px;
+    }
+    30% {
+        margin-top: -40px;
+    }
+    60% {
+        margin-top: -60px;
+    }
+    100% {
+        margin-top: 0px;
+    }
+}
+
+/* Flowers in the grass */
+.flowers {
+    position: absolute;
+    bottom: 2px;
+    width: 100%;
+    height: 15px;
+    pointer-events: none;
+    z-index: 1001; /* Below snail */
+}
+
+.flower {
+    position: absolute;
+    font-size: 12px;
+    bottom: 0;
+    animation: flowerSway 3s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.flower:nth-child(1) { animation-delay: 0s; }
+.flower:nth-child(2) { animation-delay: 0.5s; }
+.flower:nth-child(3) { animation-delay: 1s; }
+.flower:nth-child(4) { animation-delay: 1.5s; }
+.flower:nth-child(5) { animation-delay: 2s; }
+
+@keyframes flowerSway {
+    0%, 100% { 
+        transform: rotate(0deg) scale(1); 
+    }
+    25% { 
+        transform: rotate(-2deg) scale(1.05); 
+    }
+    50% { 
+        transform: rotate(2deg) scale(1.1); 
+    }
+    75% { 
+        transform: rotate(-1deg) scale(1.05); 
+    }
+}
+
+@keyframes crawl {
+    0% {
+        left: -40px;
+        transform: scaleX(1);
+    }
+    48% {
+        transform: scaleX(1);
+    }
+    50% {
+        left: calc(100% - 30px);
+        transform: scaleX(-1); /* Flip to face left */
+    }
+    98% {
+        transform: scaleX(-1);
+    }
+    100% {
+        left: -40px;
+        transform: scaleX(1); /* Flip back to face right */
+    }
+}
+
 .start-button {
     display: flex;
     align-items: center;
@@ -801,7 +976,7 @@ body {
 
 /* Wallpaper Previews */
 .default-bg {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: #1976d2;
 }
 
 .purple-bg {
@@ -809,7 +984,7 @@ body {
 }
 
 .green-bg {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    background: #11998e;
 }
 
 .orange-bg {
@@ -1117,12 +1292,18 @@ body {
         height: 300px;
     }
 }
-.desktop.wallpaper-purple {
+body .desktop.wallpaper-default {
+    background: linear-gradient(135deg, #ff0000 0%, #00ff00 100%) !important;
+    background-image: none !important;
+}
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .desktop.wallpaper-green {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    background: #11998e !important;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255,255,255,0.05) 0%, transparent 50%) !important;
 }
 
 .desktop.wallpaper-orange {
