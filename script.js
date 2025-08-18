@@ -1,5 +1,12 @@
 // Desktop OS Functionality with Fun Features
 
+// Mobile detection
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           ('ontouchstart' in window) || 
+           (window.innerWidth <= 768);
+}
+
 // Global variables
 let activeWindow = null;
 let windowZIndex = 100;
@@ -30,8 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeWallpaperChanger();
     initializeStartMenu();
     initializeMatrixEffect();
-    initializeTouchSupport();
+    // Touch support is now handled in initializeDesktop()
     initializeTooltips();
+    initializeClippy();
     updateTime();
     setInterval(updateTime, 1000);
     
@@ -46,40 +54,68 @@ function initializeDesktop() {
     // Add click handlers to desktop icons
     const desktopIcons = document.querySelectorAll('.desktop-icon');
     desktopIcons.forEach(icon => {
-        // Single click to select/highlight
-        icon.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDraggingIcon && !iconDragStarted) {
+        
+        if (isMobileDevice()) {
+            // Mobile: Single tap to open, no dragging
+            icon.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 selectIcon(this);
                 playSound('click');
-            }
-        });
-        
-        // Double click to open
-        icon.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!isDraggingIcon && !iconDragStarted) {
+            });
+            
+            icon.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 const windowId = this.dataset.window + '-window';
                 openWindow(windowId);
                 playSound('click');
-            }
-        });
-        
-        // Mouse down to start dragging
-        icon.addEventListener('mousedown', function(e) {
-            if (e.button === 0) { // Left mouse button only
-                iconDragStarted = false;
-                startIconDrag(e, this);
-            }
-        });
+            });
+            
+            // Disable context menu on mobile
+            icon.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+            
+        } else {
+            // Desktop: Original behavior with dragging
+            // Single click to select/highlight
+            icon.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isDraggingIcon && !iconDragStarted) {
+                    selectIcon(this);
+                    playSound('click');
+                }
+            });
+            
+            // Double click to open
+            icon.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!isDraggingIcon && !iconDragStarted) {
+                    const windowId = this.dataset.window + '-window';
+                    openWindow(windowId);
+                    playSound('click');
+                }
+            });
+            
+            // Mouse down to start dragging
+            icon.addEventListener('mousedown', function(e) {
+                if (e.button === 0) { // Left mouse button only
+                    iconDragStarted = false;
+                    startIconDrag(e, this);
+                }
+            });
+        }
     });
 
-    // Add drag functionality to windows
+    // Add drag functionality to windows (only on desktop)
     const windows = document.querySelectorAll('.window');
     windows.forEach(window => {
-        makeWindowDraggable(window);
+        if (!isMobileDevice()) {
+            makeWindowDraggable(window);
+        }
         positionWindowRandomly(window);
     });
     
@@ -131,9 +167,11 @@ function initializeDesktop() {
         }
     });
     
-    // Global mouse events for icon dragging
-    document.addEventListener('mousemove', dragIcon);
-    document.addEventListener('mouseup', stopIconDrag);
+    // Global mouse events for icon dragging (desktop only)
+    if (!isMobileDevice()) {
+        document.addEventListener('mousemove', dragIcon);
+        document.addEventListener('mouseup', stopIconDrag);
+    }
 }
 
 function positionIconsInitially() {
@@ -1819,19 +1857,6 @@ const desktopIcons = document.querySelectorAll('.desktop-icon');
 document.addEventListener('keydown', function(e) {
     console.log('Key pressed:', e.code); // Debug all key presses
     
-    // Snail jump functionality - now uses J key
-    if (e.code === 'KeyJ') {
-        console.log('J key - snail jump');
-        const snail = document.querySelector('.snail');
-        if (snail && !snail.classList.contains('jumping')) {
-            snail.classList.add('jumping');
-            setTimeout(() => {
-                snail.classList.remove('jumping');
-            }, 600);
-        }
-        return;
-    }
-
     // Desktop icon navigation
     if (e.code === 'ArrowRight' || e.code === 'ArrowLeft' || e.code === 'ArrowUp' || e.code === 'ArrowDown') {
         console.log('Arrow key pressed, currentFocusIndex:', currentFocusIndex);
@@ -2072,37 +2097,139 @@ let touchStartTime = 0;
 let touchCount = 0;
 let touchStartPos = { x: 0, y: 0 };
 
-// Initialize touch support after DOM is ready
-function initializeTouchSupport() {
-    // Only add touch support on mobile devices
-    if ('ontouchstart' in window) {
-        document.querySelectorAll('.desktop-icon').forEach(icon => {
-            // Touch events for mobile icon dragging
-            icon.addEventListener('touchstart', function(e) {
-                touchStartTime = Date.now();
-                touchCount++;
-                
-                const touch = e.touches[0];
-                touchStartPos.x = touch.clientX;
-                touchStartPos.y = touch.clientY;
-                
-                setTimeout(() => {
-                    touchCount = 0;
-                }, 300);
-            });
+// Touch support is now handled directly in initializeDesktop() for better mobile optimization
+// Clippy functionality
+function initializeClippy() {
+    const clippyContainer = document.querySelector('.clippy-container');
+    const clippy = document.querySelector('.clippy');
+    const clippyText = document.getElementById('clippy-text');
+    
+    let isDraggingClippy = false;
+    let clippyDragOffset = { x: 0, y: 0 };
+    let dragStarted = false;
+    let startX = 0;
+    let startY = 0;
+    let currentTipIndex = 0;
+    
+    // Array of individual tips
+    const helpTips = [
+        "Double-click icons to open apps",
+        "Drag windows by their title bars",
+        "Use window controls (×, -, □)",
+        "Triple-click desktop for surprises",
+        "Try the Snake and Paint games",
+        "Drag me around the screen",
+        "Right-click for context menus",
+        "Use the Start button for apps",
+        "Windows can be minimized/maximized",
+        "This is a retro Windows 95 theme",
+        "All apps work like the real thing",
+        "You can play games and paint"
+    ];
+    
+    // Make Clippy draggable and clickable
+    if (clippyContainer) {
+        clippyContainer.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    }
+    
+    function handleMouseDown(e) {
+        e.preventDefault();
+        
+        const rect = clippyContainer.getBoundingClientRect();
+        clippyDragOffset.x = e.clientX - rect.left;
+        clippyDragOffset.y = e.clientY - rect.top;
+        
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        isDraggingClippy = true;
+        dragStarted = false;
+        
+        console.log('Mouse down on Happy');
+    }
+    
+    function handleMouseMove(e) {
+        if (!isDraggingClippy) return;
+        
+        // Calculate distance moved
+        const deltaX = Math.abs(e.clientX - startX);
+        const deltaY = Math.abs(e.clientY - startY);
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        // Only start dragging if moved more than 10 pixels
+        if (!dragStarted && distance > 10) {
+            dragStarted = true;
+            clippyContainer.classList.add('dragging');
+            clippyText.innerHTML = "Wheee! I'm being dragged! 🎉";
+            console.log('Started dragging Happy');
+        }
+        
+        if (dragStarted) {
+            let newX = e.clientX - clippyDragOffset.x;
+            let newY = e.clientY - clippyDragOffset.y;
             
-            icon.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                
-                const touchDuration = Date.now() - touchStartTime;
-                
-                // Double tap detection for mobile
-                if (touchCount === 2 || touchDuration > 500) {
-                    const windowId = this.dataset.window + '-window';
-                    openWindow(windowId);
-                    playSound('click');
+            // Keep Clippy within screen bounds
+            const containerRect = clippyContainer.getBoundingClientRect();
+            const maxX = window.innerWidth - containerRect.width;
+            const maxY = window.innerHeight - containerRect.height;
+            
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            clippyContainer.style.left = newX + 'px';
+            clippyContainer.style.top = newY + 'px';
+            clippyContainer.style.bottom = 'auto';
+        }
+    }
+    
+    function handleMouseUp(e) {
+        if (!isDraggingClippy) return;
+        
+        isDraggingClippy = false;
+        clippyContainer.classList.remove('dragging');
+        
+        // If it was just a click (no drag), show next tip
+        if (!dragStarted) {
+            console.log('Click detected - showing next tip');
+            showNextTip();
+        } else {
+            console.log('Drag completed');
+            // It was a drag, restore previous state after brief message
+            const wasShowingTip = clippyContainer.getAttribute('data-showing-tip') === 'true';
+            
+            setTimeout(() => {
+                if (wasShowingTip) {
+                    // Restore current tip
+                    showCurrentTip();
+                } else {
+                    // Restore normal message
+                    clippyText.textContent = "Hi, I'm Happy! Click on me for help.";
                 }
-            });
-        });
+            }, 1000);
+        }
+        
+        dragStarted = false;
+    }
+    
+    function showNextTip() {
+        // Cycle to next tip
+        currentTipIndex = (currentTipIndex + 1) % helpTips.length;
+        showCurrentTip();
+    }
+    
+    function showCurrentTip() {
+        const tip = helpTips[currentTipIndex];
+        
+        clippyText.innerHTML = `
+            <div class="help-menu">
+                ${tip}<br><br>
+                <em>Click me for more tips!</em>
+            </div>
+        `;
+        
+        // Mark that tip is currently showing
+        clippyContainer.setAttribute('data-showing-tip', 'true');
     }
 }
