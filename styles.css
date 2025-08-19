@@ -42,7 +42,7 @@ body {
     padding: 10px;
     border-radius: 8px;
     transition: all 0.2s ease;
-    width: 80px;
+    width: 140px;
     position: absolute;
     user-select: none;
 }
@@ -52,10 +52,11 @@ body {
     transform: scale(1.1);
     opacity: 0.8;
     cursor: grabbing;
+    background: none !important;
 }
 
 .desktop-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: none;
 }
 
 /* Keyboard focus indicator */
@@ -75,8 +76,8 @@ body {
 }
 
 .desktop-icon.selected {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: none;
+    border: none;
 }
 
 .desktop-icon:active {
@@ -84,27 +85,64 @@ body {
 }
 
 .icon-image {
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
+    width: 128px;
+    height: 128px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: -15px;
 }
 
 .icon-image img {
-    width: 28px;
-    height: 28px;
+    width: 96px;
+    height: 96px;
     object-fit: contain;
 }
 
 .icon-image svg {
-    width: 28px;
-    height: 28px;
+    width: 96px;
+    height: 96px;
     color: #2c3e50;
+}
+
+/* Keep Paint and Connect icons smaller but same container height for alignment */
+.desktop-icon[data-window="paint"] .icon-image,
+.desktop-icon[data-window="social"] .icon-image {
+    width: 128px;
+    height: 128px;
+    margin-bottom: -15px;
+}
+
+.desktop-icon[data-window="paint"] .icon-image img,
+.desktop-icon[data-window="paint"] .icon-image svg,
+.desktop-icon[data-window="social"] .icon-image img,
+.desktop-icon[data-window="social"] .icon-image svg {
+    width: 48px;
+    height: 48px;
+}
+
+/* Force Paint icon and text to be centered */
+.desktop-icon[data-window="paint"] {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.desktop-icon[data-window="paint"] .icon-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.desktop-icon[data-window="paint"] .icon-label {
+    text-align: center !important;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    left: 0;
+    transform: translateX(0);
 }
 
 .icon-label {
@@ -114,22 +152,26 @@ body {
     text-align: center;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     line-height: 1.2;
+    width: 100%;
+    display: block;
 }
 
 /* Windows */
 .window {
     position: absolute;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: #c0c0c0;
+    border-top: 2px solid #dfdfdf;
+    border-left: 2px solid #dfdfdf;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
     min-width: 400px;
     min-height: 300px;
     max-width: 800px;
     max-height: 600px;
     display: none;
     z-index: 100;
-    overflow: hidden;
+    font-family: 'MS Sans Serif', sans-serif;
+    font-size: 11px;
 }
 
 .window.active {
@@ -137,56 +179,111 @@ body {
 }
 
 .window-header {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 12px 16px;
+    background: linear-gradient(90deg, #000080 0%, #000040 100%);
+    color: white;
+    padding: 3px 6px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     cursor: move;
+    font-weight: bold;
+    font-size: 11px;
+    height: 18px;
+    border-bottom: 1px solid #808080;
+}
+
+.window-title {
+    font-weight: bold;
+    color: white;
+    font-size: 11px;
+    font-family: 'MS Sans Serif', sans-serif;
+    order: 1;
 }
 
 .window-controls {
     display: flex;
-    gap: 8px;
+    gap: 2px;
+    order: 2;
 }
 
 .window-control {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+    width: 16px;
+    height: 14px;
+    background: transparent;
     border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.window-control.close {
-    background: #ff5f57;
-}
-
-.window-control.minimize {
-    background: #ffbd2e;
-}
-
-.window-control.maximize {
-    background: #28ca42;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'MS Sans Serif', sans-serif;
+    color: white;
+    font-weight: bold;
 }
 
 .window-control:hover {
-    transform: scale(1.1);
+    background: transparent;
+}
+
+.window-control:active {
+    background: transparent;
+}
+
+.window-control.close::before {
+    content: '×';
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.window-control.minimize::before {
+    content: '_';
+    font-size: 8px;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.window-control.maximize::before {
+    content: '□';
+    font-size: 8px;
+    font-weight: bold;
+}
+}
+
+.window-control.close {
+    background: transparent !important;
+}
+
+.window-control.minimize {
+    background: transparent !important;
+}
+
+.window-control.maximize {
+    background: transparent !important;
+}
+
+.window-control:hover {
+    transform: none;
+    background: transparent !important;
 }
 
 .window-title {
-    font-weight: 600;
-    color: #2c3e50;
-    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    font-size: 11px;
+    font-family: 'MS Sans Serif', sans-serif;
 }
 
 .window-content {
-    padding: 24px;
-    height: calc(100% - 60px);
+    padding: 8px;
+    height: calc(100% - 25px);
     overflow-y: auto;
-    color: #2c3e50;
+    color: #000000;
+    background: #c0c0c0;
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    margin: 2px;
 }
 
 /* About Window Content */
@@ -205,6 +302,14 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile-avatar svg {

@@ -180,8 +180,8 @@ function positionIconsInitially() {
         console.log('Positioning', icons.length, 'icons'); // Debug log
         
         const iconsPerRow = 3;
-        const horizontalSpacing = 120;
-        const verticalSpacing = 120;
+        const horizontalSpacing = 160;
+        const verticalSpacing = 160;
         const startX = 0;
         const startY = 0;
         
