@@ -536,6 +536,11 @@ class PaintApp {
         this.startX = pos.x;
         this.startY = pos.y;
         
+        if (this.currentTool === 'fill') {
+            this.floodFill(pos.x, pos.y, this.currentColor);
+            return;
+        }
+        
         if (this.currentTool === 'brush' || this.currentTool === 'eraser') {
             this.ctx.beginPath();
             this.ctx.moveTo(pos.x, pos.y);
@@ -628,6 +633,61 @@ class PaintApp {
     clearCanvas() {
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    
+    floodFill(x, y, fillColor) {
+        const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        const data = imageData.data;
+        const targetColor = this.getPixelColor(data, x, y, this.canvas.width);
+        const fillColorRgb = this.hexToRgb(fillColor);
+        
+        if (this.colorsMatch(targetColor, fillColorRgb)) return;
+        
+        const stack = [{x: Math.floor(x), y: Math.floor(y)}];
+        
+        while (stack.length > 0) {
+            const {x: px, y: py} = stack.pop();
+            
+            if (px < 0 || px >= this.canvas.width || py < 0 || py >= this.canvas.height) continue;
+            
+            const currentColor = this.getPixelColor(data, px, py, this.canvas.width);
+            if (!this.colorsMatch(currentColor, targetColor)) continue;
+            
+            this.setPixelColor(data, px, py, this.canvas.width, fillColorRgb);
+            
+            stack.push({x: px + 1, y: py});
+            stack.push({x: px - 1, y: py});
+            stack.push({x: px, y: py + 1});
+            stack.push({x: px, y: py - 1});
+        }
+        
+        this.ctx.putImageData(imageData, 0, 0);
+    }
+    
+    getPixelColor(data, x, y, width) {
+        const index = (y * width + x) * 4;
+        return {r: data[index], g: data[index + 1], b: data[index + 2], a: data[index + 3]};
+    }
+    
+    setPixelColor(data, x, y, width, color) {
+        const index = (y * width + x) * 4;
+        data[index] = color.r;
+        data[index + 1] = color.g;
+        data[index + 2] = color.b;
+        data[index + 3] = 255;
+    }
+    
+    hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+    
+    colorsMatch(color1, color2) {
+        return color1.r === color2.r && color1.g === color2.g && color1.b === color2.b;
     }
     
     saveCanvas() {
@@ -1853,6 +1913,8 @@ window.fixIcons = function() {
 let currentFocusIndex = -1;
 const desktopIcons = document.querySelectorAll('.desktop-icon');
 
+// DISABLED: Keyboard navigation to prevent multiple window opens
+/*
 document.addEventListener('keydown', function(e) {
     console.log('Key pressed:', e.code); // Debug all key presses
     
@@ -1876,32 +1938,7 @@ document.addEventListener('keydown', function(e) {
         // Add focus to new icon
         desktopIcons[currentFocusIndex].classList.add('keyboard-focused');
         console.log('New focus index:', currentFocusIndex);
-    }
-    
-    // Activate focused icon with spacebar or enter
-    if (e.code === 'Space' || e.code === 'Enter') {
-        console.log('Space/Enter pressed, currentFocusIndex:', currentFocusIndex);
-        
-        // If no icon is focused, focus the first one
-        if (currentFocusIndex < 0) {
-            console.log('No icon focused, focusing first icon');
-            currentFocusIndex = 0;
-            desktopIcons[currentFocusIndex].classList.add('keyboard-focused');
-            return;
-        }
-        
-        e.preventDefault();
-        const focusedIcon = desktopIcons[currentFocusIndex];
-        const windowId = focusedIcon.getAttribute('data-window');
-        console.log('Activating icon:', windowId, focusedIcon);
-        
-        if (windowId) {
-            console.log('Calling openWindow with:', windowId);
-            openWindow(windowId);
-        } else {
-            console.log('No windowId, trying click fallback');
-            focusedIcon.click();
-        }
+        return; // Exit early to prevent other handlers
     }
     
     // Clear focus with escape
@@ -1909,8 +1946,10 @@ document.addEventListener('keydown', function(e) {
         console.log('Escape pressed, clearing focus');
         desktopIcons[currentFocusIndex].classList.remove('keyboard-focused');
         currentFocusIndex = -1;
+        return; // Exit early to prevent other handlers
     }
 });
+*/
 
 // Test functions for debugging
 window.testMatrix = function() {
@@ -1971,21 +2010,6 @@ document.addEventListener('keydown', function(e) {
             // If no active window, deselect icons
             deselectAllIcons();
         }
-    }
-    
-    // Enter key to open selected icon
-    if (e.key === 'Enter') {
-        const selectedIcon = document.querySelector('.desktop-icon.selected');
-        if (selectedIcon) {
-            const windowId = selectedIcon.dataset.window + '-window';
-            openWindow(windowId);
-        }
-    }
-    
-    // Arrow keys to navigate icons
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-        e.preventDefault();
-        navigateIcons(e.key);
     }
     
     // Konami code easter egg
