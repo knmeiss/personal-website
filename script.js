@@ -1102,6 +1102,16 @@ function openWindow(windowId) {
         return;
     }
 
+    // Mobile: Close all other windows first
+    if (window.innerWidth <= 768) {
+        const allWindows = document.querySelectorAll('.window');
+        allWindows.forEach(w => {
+            if (w.id !== actualWindowId) {
+                closeWindow(w.id);
+            }
+        });
+    }
+
     // If window is already open, just bring it to front and restore if minimized
     if (openWindows.has(actualWindowId)) {
         restoreWindow(actualWindowId);
