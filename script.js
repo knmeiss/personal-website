@@ -430,6 +430,9 @@ class PaintApp {
     }
     
     initializeCanvas() {
+        // Resize canvas for mobile
+        this.resizeCanvas();
+        
         // Set canvas background to white
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -439,6 +442,18 @@ class PaintApp {
         this.ctx.lineJoin = 'round';
         this.ctx.strokeStyle = this.currentColor;
         this.ctx.lineWidth = this.currentSize;
+    }
+    
+    resizeCanvas() {
+        if (window.innerWidth <= 768) {
+            // Mobile: fit screen
+            this.canvas.width = Math.min(350, window.innerWidth - 20);
+            this.canvas.height = Math.min(300, window.innerHeight - 180);
+        } else {
+            // Desktop: original size
+            this.canvas.width = 600;
+            this.canvas.height = 400;
+        }
     }
     
     initializeTools() {
@@ -488,6 +503,14 @@ class PaintApp {
     }
     
     initializeEvents() {
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+            // Redraw white background after resize
+            this.ctx.fillStyle = 'white';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        });
+        
         // Mouse events
         this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
         this.canvas.addEventListener('mousemove', (e) => this.draw(e));
@@ -1102,11 +1125,11 @@ function openWindow(windowId) {
         return;
     }
 
-    // Mobile: Close all other windows first
-    if (window.innerWidth <= 768) {
+    // Mobile: Close all other windows first (check viewport width instead of window.innerWidth)
+    if (window.innerWidth <= 768 || screen.width <= 768) {
         const allWindows = document.querySelectorAll('.window');
         allWindows.forEach(w => {
-            if (w.id !== actualWindowId) {
+            if (w.id !== actualWindowId && w.style.display === 'block') {
                 closeWindow(w.id);
             }
         });
@@ -1431,10 +1454,34 @@ class SnakeGame {
     }
     
     initializeGame() {
+        this.resizeCanvas();
         this.updateScore();
         this.generateFood();
         this.draw();
         this.setupKeyboardControls();
+        this.setupResizeHandler();
+    }
+    
+    setupResizeHandler() {
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+            this.draw();
+        });
+    }
+    
+    resizeCanvas() {
+        if (window.innerWidth <= 768) {
+            // Mobile: smaller canvas
+            const maxWidth = Math.min(300, window.innerWidth - 40);
+            const maxHeight = Math.min(300, window.innerHeight - 200);
+            this.canvas.width = Math.floor(maxWidth / this.gridSize) * this.gridSize;
+            this.canvas.height = Math.floor(maxHeight / this.gridSize) * this.gridSize;
+        } else {
+            // Desktop: original size
+            this.canvas.width = 400;
+            this.canvas.height = 400;
+        }
+        this.tileCount = this.canvas.width / this.gridSize;
     }
     
     setupKeyboardControls() {
