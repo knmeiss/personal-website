@@ -1467,6 +1467,47 @@ class SnakeGame {
             this.resizeCanvas();
             this.draw();
         });
+        
+        // Add touch controls for mobile
+        this.setupTouchControls();
+    }
+    
+    setupTouchControls() {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+        });
+        
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            const touch = e.changedTouches[0];
+            const touchEndX = touch.clientX;
+            const touchEndY = touch.clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal swipe
+                if (deltaX > 30 && this.dx !== -1) {
+                    this.dx = 1; this.dy = 0; // Right
+                } else if (deltaX < -30 && this.dx !== 1) {
+                    this.dx = -1; this.dy = 0; // Left
+                }
+            } else {
+                // Vertical swipe
+                if (deltaY > 30 && this.dy !== -1) {
+                    this.dx = 0; this.dy = 1; // Down
+                } else if (deltaY < -30 && this.dy !== 1) {
+                    this.dx = 0; this.dy = -1; // Up
+                }
+            }
+        });
     }
     
     resizeCanvas() {
