@@ -99,7 +99,8 @@ body {
 
 /* Keep Paint and Connect icons smaller but same container height for alignment */
 .desktop-icon[data-window="paint"] .icon-image,
-.desktop-icon[data-window="social"] .icon-image {
+.desktop-icon[data-window="social"] .icon-image,
+.desktop-icon[data-window="about"] .icon-image {
     width: 128px;
     height: 128px;
     margin-bottom: -15px;
@@ -108,9 +109,11 @@ body {
 .desktop-icon[data-window="paint"] .icon-image img,
 .desktop-icon[data-window="paint"] .icon-image svg,
 .desktop-icon[data-window="social"] .icon-image img,
-.desktop-icon[data-window="social"] .icon-image svg {
-    width: 48px;
-    height: 48px;
+.desktop-icon[data-window="social"] .icon-image svg,
+.desktop-icon[data-window="about"] .icon-image img,
+.desktop-icon[data-window="about"] .icon-image svg {
+    width: 64px;
+    height: 64px;
 }
 
 /* Force Paint icon and text to be centered */
