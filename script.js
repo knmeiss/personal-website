@@ -1519,8 +1519,10 @@ function closeStartMenu() {
 }
 
 function handleStartMenuAction(action) {
+    console.log('Start menu action:', action);
     switch(action) {
         case 'reset':
+            console.log('Calling resetDesktop()');
             resetDesktop();
             break;
         case 'about':
@@ -1530,37 +1532,9 @@ function handleStartMenuAction(action) {
 }
 
 function resetDesktop() {
-    // Close all windows
-    const allWindows = document.querySelectorAll('.window');
-    allWindows.forEach(window => {
-        window.style.display = 'none';
-        window.classList.remove('active', 'minimized');
-    });
-    
-    // Clear open windows set
-    openWindows.clear();
-    
-    // Remove all taskbar buttons
-    const taskbarButtons = document.getElementById('taskbar-buttons');
-    taskbarButtons.innerHTML = '';
-    
-    // Reset desktop wallpaper
-    const desktop = document.querySelector('.desktop');
-    desktop.className = 'desktop';
-    
-    // Deselect all icons first
-    deselectAllIcons();
-    
-    // Reset icon positions with a delay to ensure everything is ready
-    setTimeout(() => {
-        positionIconsInitially();
-    }, 200);
-    
-    // Reset global variables
-    activeWindow = null;
-    paintApp = null;
-    
-    playSound('startup');
+    console.log('resetDesktop() called - clearing localStorage and refreshing');
+    localStorage.clear();
+    location.reload();
 }
 
 function showAboutDialog() {
