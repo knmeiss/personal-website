@@ -11,7 +11,7 @@
     <div class="desktop">
         <!-- Desktop Icons -->
         <div class="desktop-icons">
-            <div class="desktop-icon" data-window="about" title="Double-click to open About Me">
+            <div class="desktop-icon" data-window="about" title="Click to open About Me">
                 <div class="icon-image">
                     <img src="icons/aboutme.png" alt="About Me" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -21,7 +21,7 @@
                 <span class="icon-label">About Me</span>
             </div>
 
-            <div class="desktop-icon" data-window="speaking" title="Double-click to open Speaking Engagements">
+            <div class="desktop-icon" data-window="speaking" title="Click to open Speaking Engagements">
                 <div class="icon-image">
                     <img src="icons/speaking.png" alt="Speaking" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -31,7 +31,7 @@
                 <span class="icon-label">Speaking</span>
             </div>
 
-            <div class="desktop-icon" data-window="resources" title="Double-click to open Resources">
+            <div class="desktop-icon" data-window="resources" title="Click to open Resources">
                 <div class="icon-image">
                     <img src="icons/folder.png" alt="Resources" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -41,7 +41,7 @@
                 <span class="icon-label">Books</span>
             </div>
 
-            <div class="desktop-icon" data-window="social" title="Double-click to open Connect">
+            <div class="desktop-icon" data-window="social" title="Click to open Connect">
                 <div class="icon-image">
                     <img src="icons/mail.png" alt="Connect" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -51,17 +51,8 @@
                 <span class="icon-label">Connect</span>
             </div>
 
-            <div class="desktop-icon" data-window="snake" title="Double-click to open Snake Game">
-                <div class="icon-image">
-                    <img src="icons/snake.png" alt="Snake Game" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
-                        <path d="M19.5 17H18C19.1 17 20 16.1 20 15S19.1 13 18 13V9C18 8 18 7 16.92 6.14C16.97 5.93 17 5.72 17 5.5C17 3.57 15 2 12.5 2C10.24 2 8.38 3.31 8.07 5H6L3.71 2.79L3 3.5L5 5.5L3 7.5L3.71 8.21L6 6H8.07C8.38 7.69 10.24 9 12.5 9C13 9 13.5 8.92 13.93 8.8C13.97 8.87 14 8.94 14 9V13H8C6.9 13 6 13.9 6 15S6.9 17 8 17H6.5C5.12 17 4 18.12 4 19.5C4 19.67 4 19.84 4.05 20H4C2.9 20 2 20.9 2 22H19.5C20.88 22 22 20.88 22 19.5S20.88 17 19.5 17M12 5C11.45 5 11 4.55 11 4S11.45 3 12 3 13 3.45 13 4 12.55 5 12 5Z"/>
-                    </svg>
-                </div>
-                <span class="icon-label">Snake</span>
-            </div>
 
-            <div class="desktop-icon" data-window="wallpaper" title="Double-click to open Wallpapers">
+            <div class="desktop-icon" data-window="wallpaper" title="Click to open Wallpapers">
                 <div class="icon-image">
                     <img src="icons/wallpaper.png" alt="Wallpapers" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -71,7 +62,7 @@
                 <span class="icon-label">Wallpapers</span>
             </div>
 
-            <div class="desktop-icon" data-window="paint" title="Double-click to open Paint">
+            <div class="desktop-icon" data-window="paint" title="Click to open Paint">
                 <div class="icon-image">
                     <img src="icons/paint.png" alt="Paint" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
@@ -86,9 +77,9 @@
         <div class="window" id="about-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('about-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('about-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">About Me - Kourtney Meiss</div>
             </div>
@@ -96,15 +87,20 @@
                 <div class="about-content">
                     <div class="profile-section">
                         <div class="profile-avatar">
-                            <img src="images/profile.jpg" alt="Kourtney Meiss" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <img src="images/profile.jpg" alt="Kourtney Meiss" onclick="downloadHeadshot()" style="cursor: pointer;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <svg viewBox="0 0 24 24" fill="currentColor" style="display:none;">
                                 <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
                             </svg>
+                            <div class="download-overlay" onclick="downloadHeadshot()">
+                                <svg viewBox="0 0 24 24" fill="white">
+                                    <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-6 4h12v2H6v-2z"/>
+                                </svg>
+                            </div>
                         </div>
                         <div class="profile-info">
                             <h2>Kourtney Meiss</h2>
                             <h3>Developer Advocate at Amazon for Devices</h3>
-<parameter name="bio-text">
+                            <p class="personal-info copyable-bio" onclick="copyBio(this)">
                                 Hello! 👋 Currently, I'm a developer advocate at Amazon for Alexa +, Apps & Games. Prior to that I held similar roles at Box and TraceLink. I am passionate about creating exceptional developer experiences.
                                 <br><br>
                                 📍 Based out of Austin, TX
@@ -132,9 +128,9 @@
         <div class="window" id="speaking-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('speaking-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('speaking-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">Speaking Engagements</div>
             </div>
@@ -142,7 +138,9 @@
                 <div class="speaking-content">
                     <!-- No upcoming talks placeholder -->
                     <section class="no-talks-placeholder">
-                        <div class="placeholder-icon">📅</div>
+                        <div class="placeholder-icon">
+                            <img src="icons/calendar.png" alt="Calendar" style="width: 48px; height: 48px;">
+                        </div>
                         <h3>No Upcoming Talks Scheduled</h3>
                     </section>
 
@@ -174,9 +172,9 @@
         <div class="window" id="resources-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('resources-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('resources-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">Books - 5 Star Reads</div>
             </div>
@@ -188,112 +186,105 @@
                         <div class="book-item">
                             <h4>The Overstory</h4>
                             <p><strong>Author:</strong> Richard Powers</p>
+                            <a href="https://www.amazon.com/dp/039335668X" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/40180098-the-overstory" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>The Tea Girl of Hummingbird Lane</h4>
                             <p><strong>Author:</strong> Lisa See</p>
+                            <a href="https://www.amazon.com/dp/1501154826" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/25150798-the-tea-girl-of-hummingbird-lane?ref=nav_sb_ss_1_21" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
                         
                         <div class="book-item">
                             <h4>Stoner</h4>
                             <p><strong>Author: </strong> John Williams</p>
+                            <a href="https://www.amazon.com/dp/1590171993" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/166997.Stoner" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
                         
                         <div class="book-item">
                             <h4>Between Sisters</h4>
                             <p><strong>Author:</strong> Kristin Hannah</p>
+                            <a href="https://www.amazon.com/Between-Sisters-Novel-Kristin-Hannah-ebook/dp/B000FBFNT2/" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/217432.Between_Sisters?ref=nav_sb_ss_1_15" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
                         
                         <div class="book-item">
                             <h4>We Will Be Jaguars: A Memoir of My People</h4>
                             <p><strong>Author:</strong> Nemonte Nenquimo</p>
+                            <a href="https://www.amazon.com/We-Will-Be-Jaguars-Rainforest/dp/B0CQRW279S" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/195660519-we-will-be-jaguars?ref=nav_sb_ss_1_18" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
                         
                         <div class="book-item">
                             <h4>The Anthropocene Reviewed: Essays on a Human-Centered Planet</h4>
                             <p><strong>Author:</strong> John Green</p>
+                            <a href="https://www.amazon.com/dp/0525555218" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/55145261-the-anthropocene-reviewed" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>A Little Life</h4>
                             <p><strong>Author:</strong> Hanya Yanagihara</p>
+                            <a href="https://www.amazon.com/dp/0804172706" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/22822858-a-little-life" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>The Bee Sting</h4>
                             <p><strong>Author:</strong> Paul Murray</p>
+                            <a href="https://www.amazon.com/Bee-Sting-Novel-Paul-Murray/dp/1250338255/" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/62039166-the-bee-sting" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>The Great Believers</h4>
                             <p><strong>Author:</strong> Rebecca Makkai</p>
+                            <a href="https://www.amazon.com/dp/073522353X" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/45304101-the-great-believers" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>The Great Alone</h4>
                             <p><strong>Author:</strong> Kristin Hannah</p>
+                            <a href="https://www.amazon.com/dp/0312577230" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/34912895-the-great-alone" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
-                            <h4>The Heart's Invisible Furries</h4>
+                            <h4>The Heart's Invisible Furies</h4>
                             <p><strong>Author:</strong> John Boyne</p>
+                            <a href="https://www.amazon.com/Hearts-Invisible-Furies-Novel/dp/152476079X" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/33253215-the-heart-s-invisible-furies" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
                             <h4>The Song of Achilles</h4>
                             <p><strong>Author:</strong> Madeline Miller</p>
+                            <a href="https://www.amazon.com/dp/0062060627" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/11250317-the-song-of-achilles" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
 
                         <div class="book-item">
-                            <h4>Braiding Sweetgrass: Indigenous Wisdom, Scientific Knowledge, and the Teachings of Plans</h4>
+                            <h4>Braiding Sweetgrass: Indigenous Wisdom, Scientific Knowledge, and the Teachings of Plants</h4>
                             <p><strong>Author:</strong> Robin Wall Kimmerer</p>
+                            <a href="https://www.amazon.com/dp/1571313567" target="_blank" class="buy-button">Buy on Amazon</a>
+                            <a href="https://www.goodreads.com/book/show/17465709-braiding-sweetgrass" target="_blank" class="goodreads-button">View on Goodreads</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="window" id="snake-window">
-            <div class="window-header">
-                <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('snake-window')" title="Close window"></button>
-                    <button class="window-control minimize" title="Minimize to taskbar"></button>
-                    <button class="window-control maximize" title="Maximize window"></button>
-                </div>
-                <div class="window-title">Snake Game</div>
-            </div>
-            <div class="window-content">
-                <div class="snake-game">
-                    <div class="snake-header">
-                        <div class="snake-score">
-                            <span>Score: <span id="snake-score">0</span></span>
-                            <span>High Score: <span id="snake-high-score">0</span></span>
-                        </div>
-                        <div class="snake-controls">
-                            <button id="snake-start" class="snake-btn">Start Game</button>
-                            <button id="snake-pause" class="snake-btn" disabled>Pause</button>
-                        </div>
-                    </div>
-                    <div class="snake-game-area">
-                        <canvas id="snake-canvas" width="400" height="400"></canvas>
-                        <div class="snake-instructions">
-                            <p><strong>How to Play:</strong></p>
-                            <p>🐍 Use arrow keys to move</p>
-                            <p>🍎 Eat the red food to grow</p>
-                            <p>❌ Don't hit walls or yourself!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="window" id="wallpaper-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('wallpaper-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('wallpaper-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">Desktop Wallpapers</div>
             </div>
@@ -333,9 +324,9 @@
         <div class="window" id="social-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('social-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('social-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">Connect With Me</div>
             </div>
@@ -369,9 +360,9 @@
         <div class="window" id="paint-window">
             <div class="window-header">
                 <div class="window-controls">
-                    <button class="window-control close" onclick="closeWindow('paint-window')" title="Close window"></button>
                     <button class="window-control minimize" title="Minimize to taskbar"></button>
                     <button class="window-control maximize" title="Maximize window"></button>
+                    <button class="window-control close" onclick="closeWindow('paint-window')" title="Close window"></button>
                 </div>
                 <div class="window-title">Paint - Untitled</div>
             </div>

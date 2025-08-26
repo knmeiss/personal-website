@@ -78,18 +78,8 @@ function initializeDesktop() {
             
         } else {
             // Desktop: Original behavior with dragging
-            // Single click to select/highlight
+            // Single click to open
             icon.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isDraggingIcon && !iconDragStarted) {
-                    selectIcon(this);
-                    playSound('click');
-                }
-            });
-            
-            // Double click to open
-            icon.addEventListener('dblclick', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 if (!isDraggingIcon && !iconDragStarted) {
@@ -179,26 +169,54 @@ function positionIconsInitially() {
         const icons = document.querySelectorAll('.desktop-icon');
         console.log('Positioning', icons.length, 'icons'); // Debug log
         
-        const iconsPerRow = 3;
-        const horizontalSpacing = 160;
-        const verticalSpacing = 160;
-        const startX = 0;
-        const startY = 0;
+        // Try to load saved positions first
+        const savedPositions = loadIconPositions();
         
-        icons.forEach((icon, index) => {
-            const row = Math.floor(index / iconsPerRow);
-            const col = index % iconsPerRow;
+        if (savedPositions && Object.keys(savedPositions).length > 0) {
+            // Use saved positions
+            icons.forEach((icon, index) => {
+                const iconId = icon.dataset.window;
+                if (savedPositions[iconId]) {
+                    icon.style.position = 'absolute';
+                    icon.style.left = savedPositions[iconId].x + 'px';
+                    icon.style.top = savedPositions[iconId].y + 'px';
+                    icon.style.zIndex = '10';
+                } else {
+                    // Fallback to default position
+                    const row = Math.floor(index / 3);
+                    const col = index % 3;
+                    const x = col * 160;
+                    const y = row * 160;
+                    
+                    icon.style.position = 'absolute';
+                    icon.style.left = x + 'px';
+                    icon.style.top = y + 'px';
+                    icon.style.zIndex = '10';
+                }
+            });
+        } else {
+            // Use default grid layout
+            const iconsPerRow = 3;
+            const horizontalSpacing = 160;
+            const verticalSpacing = 160;
+            const startX = 0;
+            const startY = 0;
             
-            const x = startX + (col * horizontalSpacing);
-            const y = startY + (row * verticalSpacing);
-            
-            console.log(`Icon ${index}: positioning at ${x}, ${y}`); // Debug log
-            
-            icon.style.position = 'absolute';
-            icon.style.left = x + 'px';
-            icon.style.top = y + 'px';
-            icon.style.zIndex = '10';
-        });
+            icons.forEach((icon, index) => {
+                const row = Math.floor(index / iconsPerRow);
+                const col = index % iconsPerRow;
+                
+                const x = startX + (col * horizontalSpacing);
+                const y = startY + (row * verticalSpacing);
+                
+                console.log(`Icon ${index}: positioning at ${x}, ${y}`); // Debug log
+                
+                icon.style.position = 'absolute';
+                icon.style.left = x + 'px';
+                icon.style.top = y + 'px';
+                icon.style.zIndex = '10';
+            });
+        }
     }, 100);
 }
 
@@ -290,6 +308,9 @@ function stopIconDrag() {
         // Snap to grid (optional)
         snapIconToGrid(draggedIcon);
         
+        // Save icon positions
+        saveIconPositions();
+        
         isDraggingIcon = false;
         draggedIcon = null;
         
@@ -307,6 +328,35 @@ function snapIconToGrid(icon) {
     
     icon.style.left = snappedX + 'px';
     icon.style.top = snappedY + 'px';
+}
+
+function saveIconPositions() {
+    try {
+        const positions = {};
+        const icons = document.querySelectorAll('.desktop-icon');
+        
+        icons.forEach(icon => {
+            const iconId = icon.dataset.window;
+            positions[iconId] = {
+                x: parseInt(icon.style.left) || 0,
+                y: parseInt(icon.style.top) || 0
+            };
+        });
+        
+        localStorage.setItem('desktop-icon-positions', JSON.stringify(positions));
+    } catch (e) {
+        console.log('Could not save icon positions');
+    }
+}
+
+function loadIconPositions() {
+    try {
+        const saved = localStorage.getItem('desktop-icon-positions');
+        return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+        console.log('Could not load icon positions');
+        return null;
+    }
 }
 
 function selectIcon(icon) {
@@ -401,14 +451,16 @@ function initializeWallpaperChanger() {
             console.log('Desktop computed background:', window.getComputedStyle(desktop).background);
             
             // Visual feedback
-            wallpaperOptions.forEach(opt => opt.style.opacity = '0.7');
-            this.style.opacity = '1';
-            
-            setTimeout(() => {
-                wallpaperOptions.forEach(opt => opt.style.opacity = '1');
-            }, 1000);
+            wallpaperOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
         });
     });
+    
+    // Set green wallpaper as selected by default
+    const greenOption = document.querySelector('[data-wallpaper="green"]');
+    if (greenOption) {
+        greenOption.classList.add('selected');
+    }
 }
 
 // Paint App Implementation
@@ -1110,7 +1162,6 @@ function openWindow(windowId) {
         'speaking': 'speaking-window', 
         'resources': 'resources-window',
         'social': 'social-window',
-        'snake': 'snake-window',
         'wallpaper': 'wallpaper-window',
         'paint': 'paint-window'
     };
@@ -1152,20 +1203,6 @@ function openWindow(windowId) {
     
     // Add taskbar button
     addTaskbarButton(actualWindowId);
-    
-    // Initialize snake game if opening snake window
-    if (windowId === 'snake-window' && !snakeGame) {
-        snakeGame = new SnakeGame();
-        
-        // Add game control button handlers
-        document.getElementById('snake-start').addEventListener('click', () => {
-            snakeGame.startGame();
-        });
-        
-        document.getElementById('snake-pause').addEventListener('click', () => {
-            snakeGame.pauseGame();
-        });
-    }
     
     // Initialize paint app if opening paint window
     if (windowId === 'paint-window' && !paintApp) {
@@ -1431,349 +1468,6 @@ function positionWindowRandomly(window) {
     window.style.top = y + 'px';
 }
 
-// Snake Game Implementation
-class SnakeGame {
-    constructor() {
-        this.canvas = document.getElementById('snake-canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.gridSize = 20;
-        this.tileCount = this.canvas.width / this.gridSize;
-        
-        this.snake = [
-            {x: 10, y: 10}
-        ];
-        this.food = {};
-        this.dx = 0;
-        this.dy = 0;
-        this.score = 0;
-        this.highScore = this.loadHighScore();
-        this.gameRunning = false;
-        this.gameLoop = null;
-        
-        this.initializeGame();
-    }
-    
-    initializeGame() {
-        this.resizeCanvas();
-        this.updateScore();
-        this.generateFood();
-        this.draw();
-        this.setupKeyboardControls();
-        this.setupResizeHandler();
-    }
-    
-    setupResizeHandler() {
-        window.addEventListener('resize', () => {
-            this.resizeCanvas();
-            this.draw();
-        });
-        
-        // Add touch controls for mobile
-        this.setupTouchControls();
-    }
-    
-    setupTouchControls() {
-        let touchStartX = 0;
-        let touchStartY = 0;
-        
-        this.canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
-        });
-        
-        this.canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            const touch = e.changedTouches[0];
-            const touchEndX = touch.clientX;
-            const touchEndY = touch.clientY;
-            
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
-            
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                // Horizontal swipe
-                if (deltaX > 30 && this.dx !== -1) {
-                    this.dx = 1; this.dy = 0; // Right
-                } else if (deltaX < -30 && this.dx !== 1) {
-                    this.dx = -1; this.dy = 0; // Left
-                }
-            } else {
-                // Vertical swipe
-                if (deltaY > 30 && this.dy !== -1) {
-                    this.dx = 0; this.dy = 1; // Down
-                } else if (deltaY < -30 && this.dy !== 1) {
-                    this.dx = 0; this.dy = -1; // Up
-                }
-            }
-        });
-    }
-    
-    resizeCanvas() {
-        if (window.innerWidth <= 768) {
-            // Mobile: smaller canvas
-            const maxWidth = Math.min(300, window.innerWidth - 40);
-            const maxHeight = Math.min(300, window.innerHeight - 200);
-            this.canvas.width = Math.floor(maxWidth / this.gridSize) * this.gridSize;
-            this.canvas.height = Math.floor(maxHeight / this.gridSize) * this.gridSize;
-        } else {
-            // Desktop: original size
-            this.canvas.width = 400;
-            this.canvas.height = 400;
-        }
-        this.tileCount = this.canvas.width / this.gridSize;
-    }
-    
-    setupKeyboardControls() {
-        // Remove any existing event listeners to prevent duplicates
-        if (this.keydownHandler) {
-            document.removeEventListener('keydown', this.keydownHandler);
-        }
-        
-        this.keydownHandler = (e) => {
-            if (!this.gameRunning) return;
-            
-            // Prevent default arrow key behavior and stop propagation
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-            }
-            
-            // Change direction based on key pressed
-            switch(e.key) {
-                case 'ArrowUp':
-                    if (this.dy !== 1) { // Prevent going backwards
-                        this.dx = 0;
-                        this.dy = -1;
-                    }
-                    break;
-                case 'ArrowDown':
-                    if (this.dy !== -1) {
-                        this.dx = 0;
-                        this.dy = 1;
-                    }
-                    break;
-                case 'ArrowLeft':
-                    if (this.dx !== 1) {
-                        this.dx = -1;
-                        this.dy = 0;
-                    }
-                    break;
-                case 'ArrowRight':
-                    if (this.dx !== -1) {
-                        this.dx = 1;
-                        this.dy = 0;
-                    }
-                    break;
-            }
-        };
-        
-        // Add event listener with capture phase to intercept before desktop
-        document.addEventListener('keydown', this.keydownHandler, true);
-        
-        // Also make the canvas focusable and focus it
-        this.canvas.tabIndex = 0;
-        this.canvas.focus();
-        
-        // Add focus to canvas when clicked
-        this.canvas.addEventListener('click', () => {
-            this.canvas.focus();
-        });
-    }
-    
-    startGame() {
-        if (this.gameRunning) return;
-        
-        // Disable buttons during countdown
-        document.getElementById('snake-start').disabled = true;
-        document.getElementById('snake-pause').disabled = true;
-        
-        // Show countdown
-        this.showCountdown(3, () => {
-            this.gameRunning = true;
-            this.dx = 1; // Start moving right
-            this.dy = 0;
-            
-            // Focus the canvas to capture keyboard input
-            this.canvas.focus();
-            
-            document.getElementById('snake-pause').disabled = false;
-            
-            this.gameLoop = setInterval(() => {
-                this.update();
-                this.draw();
-            }, 150); // Game speed
-            
-            playSound('click');
-        });
-    }
-    
-    showCountdown(count, callback) {
-        if (count <= 0) {
-            // Clear countdown and start game
-            this.draw(); // Redraw normal game
-            callback();
-            return;
-        }
-        
-        // Clear canvas and show countdown number
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Draw countdown number
-        this.ctx.fillStyle = '#00ff00';
-        this.ctx.font = 'bold 72px monospace';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        this.ctx.fillText(count.toString(), this.canvas.width / 2, this.canvas.height / 2);
-        
-        playSound('click');
-        
-        // Continue countdown after 1 second
-        setTimeout(() => {
-            this.showCountdown(count - 1, callback);
-        }, 1000);
-    }
-    
-    pauseGame() {
-        if (!this.gameRunning) return;
-        
-        this.gameRunning = false;
-        clearInterval(this.gameLoop);
-        
-        document.getElementById('snake-start').disabled = false;
-        document.getElementById('snake-pause').disabled = true;
-        
-        playSound('click');
-    }
-    
-    update() {
-        const head = {x: this.snake[0].x + this.dx, y: this.snake[0].y + this.dy};
-        
-        // Check wall collision
-        if (head.x < 0 || head.x >= this.tileCount || head.y < 0 || head.y >= this.tileCount) {
-            this.gameOver();
-            return;
-        }
-        
-        // Check self collision
-        for (let segment of this.snake) {
-            if (head.x === segment.x && head.y === segment.y) {
-                this.gameOver();
-                return;
-            }
-        }
-        
-        this.snake.unshift(head);
-        
-        // Check food collision
-        if (head.x === this.food.x && head.y === this.food.y) {
-            this.score += 10;
-            this.updateScore();
-            this.generateFood();
-            playSound('click');
-        } else {
-            this.snake.pop(); // Remove tail if no food eaten
-        }
-    }
-    
-    draw() {
-        // Clear canvas
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        // Draw snake
-        this.ctx.fillStyle = '#00ff00';
-        for (let segment of this.snake) {
-            this.ctx.fillRect(segment.x * this.gridSize, segment.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
-        }
-        
-        // Draw food
-        this.ctx.fillStyle = '#ff0000';
-        this.ctx.fillRect(this.food.x * this.gridSize, this.food.y * this.gridSize, this.gridSize - 2, this.gridSize - 2);
-    }
-    
-    generateFood() {
-        this.food = {
-            x: Math.floor(Math.random() * this.tileCount),
-            y: Math.floor(Math.random() * this.tileCount)
-        };
-        
-        // Make sure food doesn't spawn on snake
-        for (let segment of this.snake) {
-            if (segment.x === this.food.x && segment.y === this.food.y) {
-                this.generateFood();
-                return;
-            }
-        }
-    }
-    
-    gameOver() {
-        this.gameRunning = false;
-        clearInterval(this.gameLoop);
-        
-        const finalScore = this.score;
-        
-        // Update high score
-        if (this.score > this.highScore) {
-            this.highScore = this.score;
-            this.saveHighScore();
-        }
-        
-        // Reset game state
-        this.snake = [{x: 10, y: 10}];
-        this.dx = 0;
-        this.dy = 0;
-        this.score = 0;
-        this.updateScore();
-        this.generateFood();
-        this.draw();
-        
-        document.getElementById('snake-start').disabled = false;
-        document.getElementById('snake-pause').disabled = true;
-        
-        // Show game over message
-        setTimeout(() => {
-            alert(`Game Over! Your score: ${finalScore}\nHigh Score: ${this.highScore}\n\nClick Start Game to play again!`);
-        }, 100);
-        
-        playSound('startup');
-    }
-    
-    updateScore() {
-        document.getElementById('snake-score').textContent = this.score;
-        document.getElementById('snake-high-score').textContent = this.highScore;
-    }
-    
-    loadHighScore() {
-        try {
-            return parseInt(localStorage.getItem('snake-high-score')) || 0;
-        } catch (e) {
-            return 0;
-        }
-    }
-    
-    saveHighScore() {
-        try {
-            localStorage.setItem('snake-high-score', this.highScore.toString());
-        } catch (e) {
-            console.log('Could not save high score');
-        }
-    }
-    
-    // Cleanup method to prevent memory leaks
-    destroy() {
-        if (this.gameLoop) {
-            clearInterval(this.gameLoop);
-        }
-        if (this.keydownHandler) {
-            document.removeEventListener('keydown', this.keydownHandler, true);
-        }
-    }
-}
-
 // Start Menu Implementation
 function initializeStartMenu() {
     const startButton = document.getElementById('start-button');
@@ -1864,17 +1558,13 @@ function resetDesktop() {
     
     // Reset global variables
     activeWindow = null;
-    if (snakeGame) {
-        snakeGame.destroy();
-    }
-    snakeGame = null;
     paintApp = null;
     
     playSound('startup');
 }
 
 function showAboutDialog() {
-    alert('Desktop OS v1.0\n\nBuilt with HTML, CSS, and JavaScript\nBy Kourtney Meiss\n\nHow to Use:\n• Double-click icons to launch apps\n• Use arrow keys + spacebar for keyboard navigation\n• Drag windows and icons around\n• Minimize windows to taskbar\n\nFeatures:\n• Interactive games and tools\n• Draggable windows and icons\n• Taskbar with minimize/restore\n• Hidden easter eggs (try pressing "J"!)');
+    alert('Desktop OS v1.0\n\nBuilt with HTML, CSS, and JavaScript\nBy Kourtney Meiss\n\nHow to Use:\n• Single-click icons to launch apps\n• Use arrow keys + spacebar for keyboard navigation\n• Drag windows and icons around\n• Minimize windows to taskbar\n\nFeatures:\n• Interactive games and tools\n• Draggable windows and icons\n• Taskbar with minimize/restore\n• Hidden easter eggs');
 }
 
 // Matrix Effect Implementation
@@ -2219,3 +1909,44 @@ let touchCount = 0;
 let touchStartPos = { x: 0, y: 0 };
 
 // Touch support is now handled directly in initializeDesktop() for better mobile optimization
+// About Me functions
+function downloadHeadshot() {
+    fetch('images/profile.jpg')
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'kourtney-meiss-headshot.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            playSound('click');
+        })
+        .catch(() => {
+            // Fallback method
+            const link = document.createElement('a');
+            link.href = 'images/profile.jpg';
+            link.download = 'kourtney-meiss-headshot.jpg';
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            playSound('click');
+        });
+}
+
+function copyBio(element) {
+    const bioText = element.textContent.replace(' (Click to copy)', '').trim().replace(/\s+/g, ' ');
+    navigator.clipboard.writeText(bioText).then(() => {
+        const originalBorder = element.style.borderColor;
+        element.style.borderColor = '#00ff00';
+        element.style.background = '#e8f5e8';
+        setTimeout(() => {
+            element.style.borderColor = originalBorder;
+            element.style.background = '';
+        }, 2000);
+        playSound('click');
+    });
+}
